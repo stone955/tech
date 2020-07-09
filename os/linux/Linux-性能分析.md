@@ -229,3 +229,15 @@ top 命令包含了很多我们前面提到的指标。这个命令可以很容�
 
 top 的一个缺陷也比较明显，很难看出变化趋势，其它像 vmstat 和 pidstat  这样的工具就会很清晰，它们是以滚动的方式输出统计信息。所以如果你在看到有问题的信息时没有及时的暂停下来（Ctrl-S 是暂停, Ctrl-Q  是继续），那么这些有用的信息就会被清屏。
 
+## htop
+
+yum install htop
+
+## iotop
+
+yun install iotop
+
+## IPTraf
+
+yum install IPTraf
+

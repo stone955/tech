@@ -784,6 +784,29 @@ func main() {
 
 ### 拦截器
 
+#### 1.filter 函数
+
+ ```go
+// 普通方法拦截器
+func unaryFilter(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	log.Printf("unary filter  server= %v, fullmethod= %v\n", info.Server, info.FullMethod)
+	return handler(ctx, req)
+}
+
+// 流失方法拦截器
+func streamFilter(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	log.Printf("stream filter  server= %v, fullmethod= %v\n", info.IsServerStream, info.FullMethod)
+	return handler(srv, ss)
+}
+ ```
+
+#### 2.服务端注册截取器
+
+```go
+// 添加截取器
+s := grpc.NewServer(grpc.Creds(cred), grpc.UnaryInterceptor(unaryFilter), grpc.StreamInterceptor(streamFilter))
+```
+
 
 
 ### 支持Web 服务
