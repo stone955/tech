@@ -106,6 +106,20 @@ man 2 bind
 
 #### 2.1.4 多路复用器 epoll
 
-
+- socket => 4
+- bind(4,8080)
+- listen(4)
+- epoll_create => 7
+- epoll_ctl(7,ADD,3,accept)
+- epoll_wait(7) 阻塞，可设超时事件
+- accept(4) = 8
+- epoll_ctl(7,ADD,8,read)  7里面有4、8
+- epoll_wait(4,8)
 
 ### 2.2 异步I/O windows IOCP
+
+### 2.3 netty
+
+- boss线程：如果只监听一个端口，则无论配置多少都只会启动一个线程，负责接收连接请求，向worker派发连接
+- worker线程：配置多少，启动多少，负责处理连接的读写
+
