@@ -1,5 +1,6 @@
 ## 0.前言
 
+- tcp/ip
 - BIO
 - NIO
 - 多路复用器
@@ -31,7 +32,23 @@
 
 ### 1.6 外设
 
-## 2.网络I/O
+## 2.TCP/IP
+
+- OSI：7层
+- TCP/IP：4层
+- tcpdump
+
+```bash
+yum install tcpdump
+tcpdump -nn -i ens33 port 80
+# curl www.baidu.com
+exec 9<> /dev/tcp/www.baidu.com/80
+echo -e "GET / HTTP/1.1\n" >& 9 
+```
+
+
+
+## 3.I/O
 
 - strace：可以查看进程的线程
 
@@ -67,9 +84,9 @@ man 2 bind
 
 **一个网络程序必然调用内核的三个函数：socket -> bind -> listen**
 
-### 2.1 同步I/O
+### 3.1 同步I/O
 
-#### 2.1.1 BIO
+#### 3.1.1 BIO
 
 - 内核给阻塞的
 - 每线程，每连接
@@ -79,7 +96,7 @@ man 2 bind
   - CPU调度消耗
   - 根源：阻塞 accept recv
 
-#### 2.1.2 NIO
+#### 3.1.2 NIO
 
 - java nio：java new io 一套新的io体系，api
 - linux nio：内核进化了，可以传个参数
@@ -91,7 +108,7 @@ man 2 bind
   - 假设1w个连接，只有一个发来数据，那么每循环一次，必须想内核发送1w次recv
   - 用户空间向内核空间的循环遍历，复杂度在系统调用上
 
-#### 2.1.3 多路复用器 select/poll
+#### 3.1.3 多路复用器 select/poll
 
 - 内核又进化了
 - 一个程序可以监听多个文件描述符
@@ -104,7 +121,7 @@ man 2 bind
 
 **如果程序自己调用recv读取I/O，那么这个I/O模型无论是BIO、NIO、多路复用器，统一叫同步I/O模型**
 
-#### 2.1.4 多路复用器 epoll
+#### 3.1.4 多路复用器 epoll
 
 - socket => 4
 - bind(4,8080)
@@ -116,9 +133,9 @@ man 2 bind
 - epoll_ctl(7,ADD,8,read)  7里面有4、8
 - epoll_wait(4,8)
 
-### 2.2 异步I/O windows IOCP
+### 3.2 异步I/O windows IOCP
 
-### 2.3 netty
+### 3.3 netty
 
 - boss线程：如果只监听一个端口，则无论配置多少都只会启动一个线程，负责接收连接请求，向worker派发连接
 - worker线程：配置多少，启动多少，负责处理连接的读写
