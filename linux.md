@@ -1,4 +1,17 @@
-## 概述
+## 0.目录
+
+- bin：所有linux系统的命令
+- root：root用户主目录
+- home：所有普通用户主目录
+- usr：资源共享目录，软件一般安装在usr/local
+- etc：配置文件目录
+
+## 1.常用命令
+
+https://mp.weixin.qq.com/s?__biz=MzU3NTgyODQ1Nw==&mid=2247492681&idx=2&sn=0896c71a73488fce258218b039f5f2f3&chksm=fd1f9ccfca6815d943b88de522103f5535fa724010a0d013bd62fd33cd89985d862cb40f043c&scene=126&sessionid=1594687571&key=e0611399b6399aa91cf64932fd290874e20a40dface318173ee65a8a23d4a5bc8307310c315d0a90457cfa8f3a0b416aab171527dbef29c2ab770e4bda90eb54fd57ffc3d24fa8dc271e237c36b9ccf4&ascene=1&uin=MTY3NzczNjk0MA%3D%3D&devicetype=Windows+10+x64&version=6209007b&lang=zh_CN&exportkey=AVZ23p2IGgWkbseyDQm93lE%3D&pass_ticket=GTBadQW%2FdFvK5dn6GKpvaLb5xR4g33CK8c%2FyMHXeFtFM%2FD5nII0mIRfeA%2BGlgqrr
+
+## 2.性能分析
+### 2.1 概述
 
 ```bash
 yum install sysstat
@@ -15,7 +28,7 @@ sar -n TCP,ETCP 1
 top
 ```
 
-## uptime
+### 2.2 uptime
 
 ````bash
 [root@localhost ~]# uptime
@@ -28,11 +41,11 @@ top
 
 在上面的例子中，平均负载显示是在不断增加的，1 分钟的值是 30，相比 15 分钟的值 19 来说是增加了。这个数字这么大就意味着有事情发生了：可能是 CPU 需求；
 
-## dmesg | tail
+### 2.3 dmesg | tail
 
 这里展示的是最近 10 条系统消息日志，如果系统消息没有就不会展示。主要是看由于性能问题导致的错误。上面这个例子中包含了杀死 OOM 问题的进程，丢弃 TCP 请求的问题。
 
-## vmstat
+### 2.4 vmstat
 
 ````bash
 [root@localhost ~]# vmstat 1
@@ -60,7 +73,7 @@ CPU 时间的分解可以帮助确定 CPU 是不是非常忙（通过用户时�
 
 在上面的例子中，CPU 时间几乎都是用户级别的，说明这是一个应用级别的使用情况。如果 CPU 的使用率平均都超过了 90%。这不一定问题；可以使用 “r” 列来检查使用饱和度。
 
-## mpstat -P ALL
+### 2.5 mpstat -P ALL
 
 ````bash
 [root@localhost ~]# mpstat -P ALL 1
@@ -84,7 +97,7 @@ Linux 3.10.0-1062.el7.x86_64 (localhost.localdomain) 	06/11/2020 	_x86_64_	(2 CP
 
 这个命令分打印各个 CPU 的时间统计，可以看出整体 CPU 的使用是不是均衡的。有一个使用率明显较高的 CPU 就可以明显看出来这是一个单线程应用。
 
-## pidstat
+### 2.6 pidstat
 
 ````bash
 [root@localhost ~]# pidstat 1
@@ -106,7 +119,7 @@ pidstat 命令有点像 top 命令中的为每个 CPU 统计信息功能，但�
 
 上面的例子可以看出是 2 个 java 进程在消耗 CPU。`%CPU` 列是所有 CPU 的使用率；1591% 是说明这个 java 进程消耗了几乎 16 个 CPU 核。
 
-## iostat -zx
+### 2.7 iostat -zx
 
 ```bash
 Linux 3.10.0-1062.el7.x86_64 (localhost.localdomain) 	06/11/2020 	_x86_64_	(2 CPU)
@@ -132,7 +145,7 @@ dm-1              0.00     0.00    0.00    0.00     0.07     0.00    50.09     0
 
 请记住，磁盘 I/O 性能低不一定是应用程序的问题。许多技术通常都被用来实现异步执行 I/O，所以应用程序不会直接阻塞和承受延时（比如：预读取和写缓冲技术）。
 
-## free -m
+### 2.8  free -m
 
 ```bash
 [root@localhost ~]# free -m
@@ -152,7 +165,7 @@ Swap:          2047           0        2047
 
 如果在 Linux 上使用了 ZFS 文件系统，则可能会更乱，因为当我们在开发一些服务的时候，ZFS 有它自己的文件系统缓存，而这部分内存的消耗是不会在 `free -m` 这个命令中合理的反映的。显示了系统内存不足，但是 ZFS 的这部分缓存是可以被应用程序使用的。
 
-## sar -n DEV
+### 2.9 sar -n DEV
 
 ```bash
 [root@localhost ~]# sar -n DEV 1
@@ -176,7 +189,7 @@ Linux 3.10.0-1062.el7.x86_64 (localhost.localdomain) 	06/11/2020 	_x86_64_	(2 CP
 
 使用这个工具是可以检测网络接口的吞吐：rxkB/s 和 txkB/s，作为收发数据负载的度量，也是检测是否达到收发极限。
 
-## sar -n TCP,ETCP
+### 2.10 sar -n TCP,ETCP
 
 ```bash
 [root@localhost ~]# sar -n TCP,ETCP 1
@@ -205,7 +218,7 @@ Linux 3.10.0-1062.el7.x86_64 (localhost.localdomain) 	06/11/2020 	_x86_64_	(2 CP
 
 重传是网络或者服务器有问题的一个信号；可能是一个不可靠的网络（例如：公网），或者可能是因为服务器过载了开始丢包。上面这个例子可以看出是每秒新建一个 TCP 连接。
 
-## top
+### 2.11 top
 
 ```bash
 [root@localhost ~]# top
@@ -229,15 +242,214 @@ top 命令包含了很多我们前面提到的指标。这个命令可以很容�
 
 top 的一个缺陷也比较明显，很难看出变化趋势，其它像 vmstat 和 pidstat  这样的工具就会很清晰，它们是以滚动的方式输出统计信息。所以如果你在看到有问题的信息时没有及时的暂停下来（Ctrl-S 是暂停, Ctrl-Q  是继续），那么这些有用的信息就会被清屏。
 
-## htop
+### 2.12 htop
 
 yum install htop
 
-## iotop
+### 2.13 iotop
 
 yun install iotop
 
-## IPTraf
+### 2.14 IPTraf
 
 yum install IPTraf
+
+## 3.网络
+
+- tcp/ip
+- BIO
+- NIO
+- 多路复用器
+- netty
+
+### 3.1 计算机组成
+
+#### 3.1.1 内存
+
+##### 3.1.1.1 内核空间
+
+- 内核分配一个绝对安全的内存空间，叫内核空间
+- 保护模式，app不能直接访问内核空间的内存地址
+
+##### 3.1.1.2 用户空间-APP
+
+#### 3.1.2  CPU
+
+- 晶振：触发系统中断
+- 时钟中断：CPU执行下一个程序的指令，涉及到从内存拷贝到CPU缓存
+- IO中断：鼠标、键盘等
+- 程序多，CPU切换多，效率下降
+
+#### 3.1.3 内存
+
+#### 3.1.4 网卡
+
+#### 3.1.5 硬盘
+
+#### 3.1.6 外设
+
+### 3.2 TCP/IP
+
+- OSI：7层
+
+- TCP/IP：
+
+  - 4层，面向连接的、可靠的传输层协议。
+
+  - 三次握手，数据传输，四次挥手。
+
+    - 端口号数量：65535
+    - 三次握手：sync（C）、ack（S）、ack（C）。确保双方确认对方收到了。双方开辟了资源为对方服务。
+
+    ```bash
+    02:05:18.776115 IP 192.168.1.113.44198 > 61.135.169.121.80: Flags [S], seq 2979211728, win 29200, options [mss 1460,sackOK,TS val 59615798 ecr 0,nop,wscale 7], length 0
+    02:05:18.807046 IP 61.135.169.121.80 > 192.168.1.113.44198: Flags [S.], seq 4263402181, ack 2979211729, win 8192, options [mss 1452,sackOK,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,wscale 5], length 0
+    02:05:18.807163 IP 192.168.1.113.44198 > 61.135.169.121.80: Flags [.], ack 1, win 229, length 0
+    ```
+
+    
+
+    - 数据传输：也是交互三次，双方确认
+
+    ```bash
+    02:05:18.807751 IP 192.168.1.113.44198 > 61.135.169.121.80: Flags [P.], seq 1:78, ack 1, win 229, length 77: HTTP: GET / HTTP/1.1
+    02:05:18.838742 IP 61.135.169.121.80 > 192.168.1.113.44198: Flags [.], ack 78, win 916, length 0
+    02:05:18.840891 IP 61.135.169.121.80 > 192.168.1.113.44198: Flags [.], seq 1:1461, ack 78, win 916, length 1460: HTTP: HTTP/1.1 200 OK
+    02:05:18.840936 IP 192.168.1.113.44198 > 61.135.169.121.80: Flags [.], ack 1461, win 251, length 0
+    02:05:18.841746 IP 61.135.169.121.80 > 192.168.1.113.44198: Flags [P.], seq 1461:2782, ack 78, win 916, length 1321: HTTP
+    02:05:18.841812 IP 192.168.1.113.44198 > 61.135.169.121.80: Flags [.], ack 2782, win 274, length 0
+    ```
+
+    
+
+    - 四次挥手：fin（C）、fin+ack（S）、fin（S）、ack（C）。确保双方释放为对方开辟的资源。客户端有可能不给ack，服务端需要有超时机制
+
+    ```bash
+    02:47:55.510958 IP 192.168.1.113.44200 > 61.135.169.121.80: Flags [F.], seq 78, ack 2782, win 272, length 0
+    02:47:55.511097 IP 61.135.169.121.80 > 192.168.1.113.44200: Flags [P.], seq 1461:2782, ack 78, win 916, length 1321: HTTP
+    # 02:47:55.511152 IP 192.168.1.113.44200 > 61.135.169.121.80: Flags [.], ack 2782, win 272, options [nop,nop,sack 1 {1461:2782}], length 0
+    # 02:47:55.537597 IP 61.135.169.121.80 > 192.168.1.113.44200: Flags [.], ack 79, win 916, length 0
+    02:47:55.537699 IP 61.135.169.121.80 > 192.168.1.113.44200: Flags [F.], seq 2782, ack 79, win 916, length 0
+    02:47:55.537728 IP 192.168.1.113.44200 > 61.135.169.121.80: Flags [.], ack 2783, win 272, length 0
+    ```
+
+    
+
+- tcpdump
+
+```bash
+yum install tcpdump
+tcpdump -nn -i ens33 port 80
+# curl www.baidu.com
+exec 9<> /dev/tcp/www.baidu.com/80
+echo -e "GET / HTTP/1.1\n" >& 9 
+```
+
+
+
+### 3.3 I/O
+
+- strace：可以查看进程的线程
+
+```bash
+# yum isntall strace
+strace -ff -o out {运行进程}
+```
+
+- netstat
+
+```bash
+# yum isntall net-tools
+netstat -antp
+```
+
+
+
+- 模拟客户端
+
+```bash
+# yum isntall nc
+nc localhost 8090
+```
+
+
+
+- 查看linux内核函数
+
+```bash
+# yum install -y man-pages
+man 2 bind
+```
+
+**一个网络程序必然调用内核的三个函数：socket -> bind -> listen**
+
+#### 3.3.1 同步I/O
+
+##### 3.3.1.1 BIO
+
+- 内核给阻塞的
+- 每线程，每连接
+- 优点：可以接收很多连接
+- 缺点：
+  - 线程内存浪费
+  - CPU调度消耗
+  - 根源：阻塞 accept recv
+
+##### 3.3.1.2 NIO
+
+- java nio：java new io 一套新的io体系，api
+- linux nio：内核进化了，可以传个参数
+- 非阻塞：一个线程处理多个连接
+- 优点：
+  - 规避多线程
+  - C10K问题
+- 缺点：
+  - 假设1w个连接，只有一个发来数据，那么每循环一次，必须想内核发送1w次recv
+  - 用户空间向内核空间的循环遍历，复杂度在系统调用上
+
+##### 3.3.1.3 多路复用器 select/poll
+
+- 内核又进化了
+- 一个程序可以监听多个文件描述符
+- 同步I/O多路复用器
+- 优点：
+  - 通过一次系统调用，把fds传给内核，内核进行遍历，减少系统调用的次数
+- 缺点：
+  - 重复传递文件描述符fd，解决方法：内核开辟空间保存fd
+  - 每次select、poll都需要全新遍历全量fd
+
+**如果程序自己调用recv读取I/O，那么这个I/O模型无论是BIO、NIO、多路复用器，统一叫同步I/O模型**
+
+##### 3.3.1.4 多路复用器 epoll
+
+- socket => 4
+- bind(4,8080)
+- listen(4)
+- epoll_create => 7
+- epoll_ctl(7,ADD,3,accept)
+- epoll_wait(7) 阻塞，可设超时事件
+- accept(4) = 8
+- epoll_ctl(7,ADD,8,read)  7里面有4、8
+- epoll_wait(4,8)
+
+#### 3.3.2 异步I/O windows IOCP
+
+#### 3.3.3 netty
+
+- boss线程：如果只监听一个端口，则无论配置多少都只会启动一个线程，负责接收连接请求，向worker派发连接
+- worker线程：配置多少，启动多少，负责处理连接的读写
+
+### 3.4 秒杀
+
+![](D:/Project/typora/tech/picture/秒杀.png)
+
+### 3.5 分布式锁
+
+- redis：CAP问题，如果强一致，则只能CP，如果弱一致，则只能AP，破坏一致性。
+- zookeeper：
+  - 分布式协调中心，分布式的基础。
+  - 最终一致性：3、5、7等单数节点，异常节点下线，不提供服务，恢复后同步数据，数据一致后才可以提供服务。
+  - 过半节点，如果不过半，可能出现脑裂。
+  - 分布式更喜欢主从集群，paxos
+- etcd：
 
