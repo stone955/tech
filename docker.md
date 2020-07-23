@@ -4,25 +4,7 @@
 ### 卸载旧版本
 
 ````bash
-yum remove -y docker \
-
-docker-client \
-
-docker-client-latest \
-
-docker-common \
-
-docker-latest \
-
-docker-latest-logrotate \
-
-docker-logrotate \
-
-docker-selinux \
-
-docker-engine-selinux \
-
-docker-engine
+yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
 
 ````
 
@@ -44,12 +26,11 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 }
 EOF
 sudo systemctl daemon-reload
-sudo systemctl restart docker
 ````
 ### 安装并启动 docker
 
 ````bash
-yum install -y docker-ce{-18.09.9} 
+yum install -y docker-ce
 
 systemctl enable docker
 

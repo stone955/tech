@@ -418,8 +418,6 @@ man 2 bind
   - 重复传递文件描述符fd，解决方法：内核开辟空间保存fd
   - 每次select、poll都需要全新遍历全量fd
 
-**如果程序自己调用recv读取I/O，那么这个I/O模型无论是BIO、NIO、多路复用器，统一叫同步I/O模型**
-
 ##### 3.3.1.4 多路复用器 epoll
 
 - socket => 4
@@ -427,10 +425,12 @@ man 2 bind
 - listen(4)
 - epoll_create => 7
 - epoll_ctl(7,ADD,3,accept)
-- epoll_wait(7) 阻塞，可设超时事件
+- epoll_wait(7) 阻塞，可设超时时间
 - accept(4) = 8
 - epoll_ctl(7,ADD,8,read)  7里面有4、8
 - epoll_wait(4,8)
+
+**如果程序自己调用recv读取I/O，那么这个I/O模型无论是BIO、NIO、多路复用器，统一叫同步I/O模型**
 
 #### 3.3.2 异步I/O windows IOCP
 

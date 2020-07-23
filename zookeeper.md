@@ -15,6 +15,15 @@
 
 ### 1.1 docker 安装
 
+```bash
+# 获取镜像
+sudo docker pull wurstmeister/zookeeper
+# 启动
+sudo docker run --name zookeeper -p 12181:2181 -d wurstmeister/zookeeper:latest
+```
+
+
+
 ### 1.2 普通安装
 
 
