@@ -264,6 +264,16 @@ yum install IPTraf
 
 ### 3.1 计算机组成
 
+![](./assets/计组.png)
+
+- 总线传输单位：4字节（32位），8字节（64位）
+- 下面是 CPU 可能执行简单操作的几个步骤：
+  - 加载（Load）：从主存中拷贝一个字节或一个字到内存中，覆盖寄存器先前的内容
+  - 存储（Store）：将寄存器中的字节或字复制到主存的某个位置，覆盖该位置先前的内容
+  - 操作（Operate）：把两个寄存器的内容复制到ALU，把两个字进行算数运算，并把结果存储到寄存器中，覆盖寄存器先前的内容
+  - 跳转（Jump）：从指令中抽取一个字，把这个字复制到程序计数器（PC），覆盖原来的值
+- 参考：https://mp.weixin.qq.com/s?__biz=MzI4MDEwNzAzNg==&mid=2649448120&idx=2&sn=99df7378dbde78c054c7e8c93d58ef32&chksm=f3a27fcbc4d5f6dd7a65fbbe9dfeb2d8ebe33418803e3303956a44fe621fd3921701c4ce8018&scene=126&sessionid=1595482537&key=649ec29a953848f471da363b57c2ad48591a32f308f625c9fa14e49a4e59b1d1035bfb8f93aaa2574ea225a0830b310a1e10f7edb2089bd6ba36faa1266aaada901d44b182cc42ba0aee477387a9e71d&ascene=1&uin=MTY3NzczNjk0MA%3D%3D&devicetype=Windows+10+x64&version=62090529&lang=zh_CN&exportkey=AXfRrgpxo4ms8VG8sXlo6S8%3D&pass_ticket=lKwZXeHx3NQ0r2wr2FOp%2F6CWXSMuEqJpSBw%2BoqjtexHFRzAhtky2trK6mETSmolC
+
 #### 3.1.1 内存
 
 ##### 3.1.1.1 内核空间
@@ -441,7 +451,7 @@ man 2 bind
 
 ### 3.4 秒杀
 
-![](D:/Project/typora/tech/picture/秒杀.png)
+![](D:/Project/typora/tech/assets/秒杀.png)
 
 ### 3.5 分布式锁
 
